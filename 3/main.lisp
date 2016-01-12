@@ -1,5 +1,5 @@
 (defpackage #:sdl-tutorial-3
-  (:use :common-lisp :sdl2)
+  (:use :common-lisp)
   (:export :main))
 
 (in-package :sdl-tutorial-3)
@@ -7,20 +7,21 @@
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
 
-(defmacro with-window-and-renderer (window renderer &body body)
+(defmacro with-window-surface (window surface &body body)
   `(sdl2:with-init (:video)
-    (sdl2:with-window (,window :title "SDL2 Tutorial" :w *screen-width* :h *screen-height*)
-      (sdl2:with-renderer (,renderer ,window)
-        ,@body))))
+     (sdl2:with-window (,window
+                        :title "SDL2 Tutorial"
+                        :w *screen-width*
+                        :h *screen-height*
+                        :flags '(:shown))
+       (let ((,surface (sdl2:get-window-surface ,window)))
+         ,@body))))
 
 (defun main()
-  (with-window-and-renderer window renderer
-    (let* ((image (sdl2:load-bmp "exit.bmp"))
-           (texture (sdl2:create-texture-from-surface renderer image)))
+  (with-window-surface win screen-surface
+    (let ((image (sdl2:load-bmp "3/exit.bmp")))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
         (:idle ()
-         (sdl2:render-copy renderer texture)
-         (sdl2:render-present renderer)))
-      (sdl2:destroy-texture texture)
-      (sdl2:free-surface image))))
+               (sdl2:blit-surface image nil screen-surface nil)
+               (sdl2:update-window win))))))
