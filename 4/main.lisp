@@ -27,7 +27,6 @@
   (with-window-and-renderer window renderer
     (let* ((textures (load-media renderer))
            (texture (getf textures :default)))
-      (format t ":::~a~%" texture)
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
         (:keydown
