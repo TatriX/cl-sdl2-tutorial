@@ -9,7 +9,7 @@
 
 (defmacro with-window-and-renderer (window renderer &body body)
   `(sdl2:with-init (:video)
-     (sdl2:with-window (,window :title "SDL2 Tutorial");;  :w *screen-width* :h *screen-height*
+     (sdl2:with-window (,window :title "SDL2 Tutorial" :w *screen-width* :h *screen-height*)
        (sdl2:with-renderer (,renderer ,window)
          ,@body))))
 
