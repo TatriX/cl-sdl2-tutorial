@@ -1,6 +1,6 @@
 (defpackage #:sdl-tutorial-4
   (:use :common-lisp :sdl2)
-  (:export :c-main :main))
+  (:export :main))
 
 (in-package :sdl-tutorial-4)
 
