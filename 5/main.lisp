@@ -7,7 +7,7 @@
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
 
-(defmacro with-window-surface (window surface &body body)
+(defmacro with-window-surface ((window surface) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
                         :title "SDL2 Tutorial"
@@ -21,7 +21,7 @@
   (sdl2:convert-surface-format (sdl2:load-bmp filename) pixel-format))
 
 (defun main()
-  (with-window-surface window screen-surface
+  (with-window-surface (window screen-surface)
     (sdl2:with-event-loop (:method :poll)
       (:quit () t)
       (:idle ()
