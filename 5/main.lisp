@@ -22,11 +22,13 @@
 
 (defun main()
   (with-window-surface (window screen-surface)
-    (sdl2:with-event-loop (:method :poll)
-      (:quit () t)
-      (:idle ()
-             (sdl2:blit-scaled (load-surface "5/stretch.bmp" (sdl2:surface-format-format screen-surface))
-                               nil
-                               screen-surface
-                               (sdl2:make-rect 0 0 *screen-width* *screen-height*))
-             (sdl2:update-window window)))))
+    (let ((image-surface (load-surface "5/stretch.bmp" (sdl2:surface-format-format screen-surface)))
+          (rect (sdl2:make-rect 0 0 *screen-width* *screen-height*)))
+      (sdl2:with-event-loop (:method :poll)
+        (:quit () t)
+        (:idle ()
+               (sdl2:blit-scaled image-surface
+                                 nil
+                                 screen-surface
+                                 rect)
+               (sdl2:update-window window))))))
