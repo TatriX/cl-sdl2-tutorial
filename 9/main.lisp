@@ -23,6 +23,7 @@
 (defun main()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
+
     (let ((texture (load-texture renderer "9/texture.png")))
           (sdl2:with-event-loop (:method :poll)
             (:quit () t)
