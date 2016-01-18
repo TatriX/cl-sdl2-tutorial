@@ -15,13 +15,13 @@
     :initarg :renderer
     :initform (error "Must supply a renderer"))
    (width
-    :accessor width
+    :accessor tex-width
     :initform 0 )
    (height
-    :accessor height
+    :accessor tex-height
     :initform 0)
    (texture
-    :accessor texture
+    :accessor tex-texture
     :initform nil)))
 
 (defmethod initialize-instance :after ((tex ltexture) &key)

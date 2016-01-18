@@ -1,8 +1,8 @@
-(defpackage #:sdl-tutorial-11
+(defpackage #:sdl-tutorial-13
   (:use :common-lisp)
   (:export :main))
 
-(in-package :sdl-tutorial-11)
+(in-package :sdl-tutorial-13)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -33,6 +33,15 @@
                                                       0 #xFF #xFF))
       (setf texture (sdl2:create-texture-from-surface renderer surface)))))
 
+(defun set-color (tex r g b)
+  (sdl2:set-texture-color-mod (tex-texture tex) r g b))
+
+(defun set-blend-mode (tex blending)
+  (sdl2:set-texture-blend-mode (tex-texture tex) blending))
+
+(defun set-alpha (tex alpha)
+  (sdl2:set-texture-alpha-mod (tex-texture tex) alpha))
+
 (defun render (tex x y &key clip)
   (with-slots (renderer texture width height) tex
     (sdl2:render-copy renderer
@@ -53,39 +62,33 @@
        (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated))
          ,@body))))
 
+(defun clamp (x)
+  (max 0 (min 255 x)))
+
+(defmacro clamp-incf (x delta)
+  `(setf ,x (clamp (+ ,x ,delta))))
+
+(defmacro clamp-decf (x delta)
+  `(setf ,x (clamp (- ,x ,delta))))
+
 (defun main()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((spritesheet-tex (make-instance 'ltexture :filename "11/spritesheet.png" :renderer renderer))
-          (sprite-clips '(:top-left (0 0 100 100)
-                          :top-right (100 0 100 100)
-                          :bottom-left (0 100 100 100)
-                          :bottom-right (100 100 100 100))))
+    (let ((bg-texture (make-instance 'ltexture :filename "13/fadein.png" :renderer renderer))
+          (modulated-texture (make-instance 'ltexture :filename "13/fadeout.png" :renderer renderer))
+          (alpha 255)
+          (delta 32))
+      (set-blend-mode modulated-texture :blend)
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
+        (:keydown (:keysym keysym)
+                  (case (sdl2:scancode keysym)
+                    (:scancode-w (clamp-incf alpha delta))
+                    (:scancode-s (clamp-decf alpha delta))))
         (:idle ()
                (sdl2:set-render-draw-color renderer #xFF #xFF #xFF #xFF)
                (sdl2:render-clear renderer)
-
-               (let ((rect (apply #'sdl2::make-rect (getf sprite-clips :top-left))))
-                 (render spritesheet-tex 0 0 :clip rect))
-
-               (let ((rect (apply #'sdl2::make-rect (getf sprite-clips :top-right))))
-                 (render spritesheet-tex
-                         (- *screen-width* (sdl2:rect-width rect))
-                         0
-                         :clip rect))
-
-               (let ((rect (apply #'sdl2::make-rect (getf sprite-clips :bottom-left))))
-                 (render spritesheet-tex
-                         0
-                         (- *screen-height* (sdl2:rect-height rect))
-                         :clip rect))
-
-               (let ((rect (apply #'sdl2::make-rect (getf sprite-clips :bottom-right))))
-                 (render spritesheet-tex
-                         (- *screen-width* (sdl2:rect-width rect))
-                         (- *screen-height* (sdl2:rect-height rect))
-                         :clip rect))
-
+               (render bg-texture 0 0)
+               (set-alpha modulated-texture alpha)
+               (render modulated-texture 0 0)
                (sdl2:render-present renderer))))))
