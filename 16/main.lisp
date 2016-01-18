@@ -1,11 +1,13 @@
-(defpackage #:sdl-tutorial-13
+(defpackage #:sdl-tutorial-16
   (:use :common-lisp)
   (:export :main))
 
-(in-package :sdl-tutorial-13)
+(in-package :sdl-tutorial-16)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
+
+(defparameter *font* nil)
 
 (defclass tex ()
   ((renderer
@@ -32,24 +34,30 @@
         (setf texture (sdl2:create-texture-from-surface renderer surface))))
     tex))
 
+(defun load-texture-from-text (renderer text)
+  (let ((tex (make-instance 'tex :renderer renderer)))
+    (with-slots (renderer texture  width height) tex
+      (let ((surface (sdl2-ttf:render-text-solid *font* text 0 0 0 0)))
+        (setf width (sdl2:surface-width surface))
+        (setf height (sdl2:surface-height surface))
+        (setf texture (sdl2:create-texture-from-surface renderer surface))))
+    tex))
+
 (defun set-color (tex r g b)
   (sdl2:set-texture-color-mod (tex-texture tex) r g b))
 
-(defun set-blend-mode (tex blending)
-  (sdl2:set-texture-blend-mode (tex-texture tex) blending))
-
-(defun set-alpha (tex alpha)
-  (sdl2:set-texture-alpha-mod (tex-texture tex) alpha))
-
-(defun render (tex x y &key clip)
+(defun render (tex x y &key clip angle center flip)
   (with-slots (renderer texture width height) tex
-    (sdl2:render-copy renderer
-                      texture
-                      :source-rect clip
-                      :dest-rect (sdl2:make-rect x
-                                                 y
-                                                 (if clip (sdl2:rect-width clip) width)
-                                                 (if clip (sdl2:rect-height clip) height)))))
+    (sdl2:render-copy-ex renderer
+                         texture
+                         :source-rect clip
+                         :dest-rect (sdl2:make-rect x
+                                                    y
+                                                    (if clip (sdl2:rect-width clip) width)
+                                                    (if clip (sdl2:rect-height clip) height))
+                         :angle angle
+                         :center center
+                         :flip (list flip))))
 
 (defmacro with-window-renderer ((window renderer) &body body)
   `(sdl2:with-init (:video)
@@ -61,33 +69,20 @@
        (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated))
          ,@body))))
 
-(defun clamp (x)
-  (max 0 (min 255 x)))
-
-(defmacro clamp-incf (x delta)
-  `(setf ,x (clamp (+ ,x ,delta))))
-
-(defmacro clamp-decf (x delta)
-  `(setf ,x (clamp (- ,x ,delta))))
-
 (defun main()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((bg-texture (load-texture-from-file renderer "13/fadein.png"))
-          (modulated-texture (load-texture-from-file renderer "13/fadeout.png"))
-          (alpha 255)
-          (delta 32))
-      (set-blend-mode modulated-texture :blend)
+    (sdl2-ttf:init)
+    (setf *font* (sdl2-ttf:open-font "16/Pacifico.ttf" 28))
+    (let ((texture (load-texture-from-text renderer "The quick brown fox jumps over the lazy dog")))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
-        (:keydown (:keysym keysym)
-                  (case (sdl2:scancode keysym)
-                    (:scancode-w (clamp-incf alpha delta))
-                    (:scancode-s (clamp-decf alpha delta))))
         (:idle ()
                (sdl2:set-render-draw-color renderer #xFF #xFF #xFF #xFF)
                (sdl2:render-clear renderer)
-               (render bg-texture 0 0)
-               (set-alpha modulated-texture alpha)
-               (render modulated-texture 0 0)
-               (sdl2:render-present renderer))))))
+               (render texture
+                       (round (/ (- *screen-width* (tex-width texture)) 2))
+                       (round (/ (- *screen-height* (tex-height texture)) 2)))
+               (sdl2:render-present renderer))))
+    (sdl2-ttf:quit)
+    (sdl2-image:quit)))

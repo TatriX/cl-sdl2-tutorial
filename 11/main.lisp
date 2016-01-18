@@ -7,11 +7,8 @@
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
 
-(defclass ltexture ()
-  ((filename
-    :initarg :filename
-    :initform (error "Must supply a filename"))
-   (renderer
+(defclass tex ()
+  ((renderer
     :initarg :renderer
     :initform (error "Must supply a renderer"))
    (width
@@ -24,14 +21,16 @@
     :accessor tex-texture
     :initform nil)))
 
-(defmethod initialize-instance :after ((tex ltexture) &key)
-  (with-slots (filename renderer texture  width height) tex
-    (let ((surface (sdl2-image:load-image filename)))
-      (setf width (sdl2:surface-width surface))
-      (setf height (sdl2:surface-height surface))
-      (sdl2:set-color-key surface :true (sdl2:map-rgb (sdl2:surface-format surface)
-                                                      0 #xFF #xFF))
-      (setf texture (sdl2:create-texture-from-surface renderer surface)))))
+(defun load-texture-from-file (renderer filename)
+  (let ((tex (make-instance 'tex :renderer renderer)))
+    (with-slots (renderer texture  width height) tex
+      (let ((surface (sdl2-image:load-image filename)))
+        (setf width (sdl2:surface-width surface))
+        (setf height (sdl2:surface-height surface))
+        (sdl2:set-color-key surface :true (sdl2:map-rgb (sdl2:surface-format surface)
+                                                        0 #xFF #xFF))
+        (setf texture (sdl2:create-texture-from-surface renderer surface))))
+    tex))
 
 (defun render (tex x y &key clip)
   (with-slots (renderer texture width height) tex
@@ -56,7 +55,7 @@
 (defun main()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((spritesheet-tex (make-instance 'ltexture :filename "11/spritesheet.png" :renderer renderer))
+    (let ((spritesheet-tex (load-texture-from-file renderer "11/spritesheet.png"))
           (sprite-clips '(:top-left (0 0 100 100)
                           :top-right (100 0 100 100)
                           :bottom-left (0 100 100 100)
