@@ -19,7 +19,7 @@
 
 (defun main(&key (delay 2000))
   (with-window-surface (window screen-surface)
-    (sdl2:blit-surface (sdl2:load-bmp "2/hello.bmp")
+    (sdl2:blit-surface (sdl2:load-bmp "2/hello_world.bmp")
                        nil
                        screen-surface
                        nil)
