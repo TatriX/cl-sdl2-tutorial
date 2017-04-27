@@ -39,4 +39,5 @@
                     (t (setf image (getf images :default)))))
         (:idle ()
                (sdl2:blit-surface image nil screen-surface nil)
-               (sdl2:update-window window))))))
+               (sdl2:update-window window)
+               (sdl2:delay 100))))))    ;reduce cpu usage
