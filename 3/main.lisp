@@ -1,8 +1,8 @@
-(defpackage #:sdl-tutorial-3
+(defpackage #:sdl2-tutorial-3
   (:use :common-lisp)
   (:export :main))
 
-(in-package :sdl-tutorial-3)
+(in-package :sdl2-tutorial-3)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
