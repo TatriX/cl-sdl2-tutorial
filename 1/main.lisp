@@ -1,8 +1,8 @@
-(defpackage #:sdl-tutorial-1
+(defpackage #:sdl2-tutorial-1
   (:use :common-lisp)
   (:export :main))
 
-(in-package :sdl-tutorial-1)
+(in-package :sdl2-tutorial-1)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -15,4 +15,7 @@
                         nil
                         (sdl2:map-rgb (sdl2:surface-format screen-surface) 255 255 255))
         (sdl2:update-window window)
-        (sdl2:delay delay)))))
+	(sdl2:with-event-loop (:method :poll)
+	  (:quit () t)
+	  (:idle ()
+		 (sdl2:delay delay)))))))

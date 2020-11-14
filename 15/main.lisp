@@ -1,8 +1,8 @@
-(defpackage #:sdl-tutorial-15
+(defpackage #:sdl2-tutorial-15
   (:use :common-lisp)
   (:export :main))
 
-(in-package :sdl-tutorial-15)
+(in-package :sdl2-tutorial-15)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -62,7 +62,7 @@
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
     (let ((texture (load-texture-from-file renderer "15/arrow.png"))
-          (flip :flip-none)
+          (flip :none)
           (degrees 0)
           (delta 60))
       (sdl2:with-event-loop (:method :poll)
