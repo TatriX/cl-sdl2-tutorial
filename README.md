@@ -1,7 +1,6 @@
 # Common Lisp SDL2 tutorials
 Adapted from http://lazyfoo.net/tutorials/SDL/
 
-
 ## Installing the SDL2 Libraries
 
   The tutorial requires that SDL2, SDL2 Image, and SDL2 TTF are installed before
@@ -45,10 +44,20 @@ below.
 	apt install libsdl2-2.0 libsdl2-image-2.0 libsdl2-ttf-2.0
 
 
+## Installation
+
+Using [quicklisp](https://www.quicklisp.org/beta/):
+```
+git clone https://github.com/TatriX/cl-sdl2-tutorial/ ~/quicklisp/local-projects
+```
+
+```lisp
+> (ql:quickload :sdl2-tutorial)
+```
+
+
 ## Running the Examples
 
-A repl.sh script is provided that loads SDL2-TUTORIAL with quicklisp and then
-starts up a swank thread on port 4005 for repl connections.
-
-	1. ./repl.sh
-	2. (sdl2-tutorial:main #'sdl2-tutorial-1:main)
+```lisp
+(sdl2-tutorial-01:run)
+```
