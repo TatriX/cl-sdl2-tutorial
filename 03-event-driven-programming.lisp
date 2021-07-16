@@ -33,4 +33,6 @@
                (sdl2:blit-surface image nil screen-surface nil)
                (sdl2:update-window window)
                ;; reduce cpu usage
-               (sdl2:delay 100))))))
+               (sdl2:delay 100)))
+      ;; clean up
+      (sdl2:free-surface image))))
