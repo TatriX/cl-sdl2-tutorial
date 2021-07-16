@@ -6,7 +6,7 @@
   :components ((:file "01-hello-sdl")
                (:file "02-getting-an-image-on-the-screen")
                (:file "03-event-driven-programming")
-               (:file "04/tutorial-04")
+               (:file "04-key-presses")
                (:file "05/tutorial-05")
                (:file "06/tutorial-06")
                (:file "07/tutorial-07")
