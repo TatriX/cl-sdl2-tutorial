@@ -1,8 +1,8 @@
-(defpackage #:sdl2-tutorial-03
-  (:use :common-lisp)
-  (:export :main))
+(defpackage #:sdl2-tutorial-02-getting-an-image-on-the-screen
+  (:use :cl)
+  (:export :run))
 
-(in-package :sdl2-tutorial-03)
+(in-package :sdl2-tutorial-02-getting-an-image-on-the-screen)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -10,7 +10,7 @@
 (defmacro with-window-surface ((window surface) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
-                        :title "SDL2 Tutorial"
+                        :title "SDL2 Tutorial 02"
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
@@ -24,13 +24,11 @@
         (error "cannot load image ~a (check that file exists)" fullpath)
         image)))
 
-(defun run ()
+(defun run()
   (with-window-surface (window screen-surface)
-    (let ((image (load-image "./03/exit.bmp")))
-      (sdl2:with-event-loop (:method :poll)
-        (:quit () t)
-        (:idle ()
-               (sdl2:blit-surface image nil screen-surface nil)
-               (sdl2:update-window window)
-               ;; reduce cpu usage
-               (sdl2:delay 100))))))
+    (let ((image (load-image #p"./assets/02/hello_world.bmp")))
+      (sdl2:blit-surface image nil screen-surface nil)
+      (sdl2:update-window window)
+      (sdl2:delay 2000)
+      ;; clean up
+      (sdl2:free-surface image))))

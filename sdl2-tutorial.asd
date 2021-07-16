@@ -3,9 +3,9 @@
   :version "0.0.1"
   :licence "Public Domain"
   :depends-on ("bordeaux-threads" "sdl2" "sdl2-image" "sdl2-ttf")
-  :components ((:file "01/tutorial-01")
-               (:file "02/tutorial-02")
-               (:file "03/tutorial-03")
+  :components ((:file "01-hello-sdl")
+               (:file "02-getting-an-image-on-the-screen")
+               (:file "03-event-driven-programming")
                (:file "04/tutorial-04")
                (:file "05/tutorial-05")
                (:file "06/tutorial-06")

@@ -1,8 +1,8 @@
-(defpackage #:sdl2-tutorial-01
+(defpackage #:sdl2-tutorial-01-hello-sdl
   (:use :cl)
   (:export :run))
 
-(in-package :sdl2-tutorial-01)
+(in-package :sdl2-tutorial-01-hello-sdl)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
