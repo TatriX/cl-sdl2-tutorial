@@ -1,6 +1,6 @@
 (defpackage #:sdl2-tutorial-03-event-driven-programming
-  (:use :common-lisp)
-  (:export :main))
+  (:use :cl)
+  (:export :run))
 
 (in-package :sdl2-tutorial-03-event-driven-programming)
 
