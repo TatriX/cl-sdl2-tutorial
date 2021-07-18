@@ -7,7 +7,7 @@
                (:file "02-getting-an-image-on-the-screen")
                (:file "03-event-driven-programming")
                (:file "04-key-presses")
-               (:file "05/tutorial-05")
+               (:file "05-optimized-surface-loading-and-soft-stretching")
                (:file "06/tutorial-06")
                (:file "07/tutorial-07")
                (:file "08/tutorial-08")
