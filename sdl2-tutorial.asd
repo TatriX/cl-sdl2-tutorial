@@ -8,7 +8,7 @@
                (:file "03-event-driven-programming")
                (:file "04-key-presses")
                (:file "05-optimized-surface-loading-and-soft-stretching")
-               (:file "06/tutorial-06")
+               (:file "06-extension-libraries-and-loading-other-image-formats.lisp ")
                (:file "07/tutorial-07")
                (:file "08/tutorial-08")
                (:file "09/tutorial-09")
