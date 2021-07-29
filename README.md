@@ -58,6 +58,18 @@ git clone https://github.com/TatriX/cl-sdl2-tutorial/ ~/quicklisp/local-projects
 
 ## Running the Examples
 
+Tutorial packages are named as `sdl2-tutorial-XX-DESC`
+where `XX` is a number starting from `01`.
+
 ```lisp
-(sdl2-tutorial-01:run)
+(sdl2-tutorial-01-hello-sdl:run)
+;;
+(sdl2-tutorial-04-key-presses:run)
 ```
+
+## Notes
+As far as I can tell `cl-sdl2` in most cases doesn't free created
+objects. This means it's up to a user to do so. I've tried to free
+allocated resources, but as with any manual memory management I could
+miss something. If you notice anything, please create an issue or even
+send a PR!
