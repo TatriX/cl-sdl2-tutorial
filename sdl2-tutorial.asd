@@ -10,7 +10,7 @@
                (:file "05-optimized-surface-loading-and-soft-stretching")
                (:file "06-extension-libraries-and-loading-other-image-formats.lisp")
                (:file "07-texture-loading-and-rendering.lisp")
-               (:file "08/tutorial-08")
+               (:file "08-geometry-rendering")
                (:file "09/tutorial-09")
                (:file "10/tutorial-10")
                (:file "11/tutorial-11")
