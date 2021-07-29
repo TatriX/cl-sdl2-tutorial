@@ -11,7 +11,7 @@
                (:file "06-extension-libraries-and-loading-other-image-formats.lisp")
                (:file "07-texture-loading-and-rendering.lisp")
                (:file "08-geometry-rendering")
-               (:file "09/tutorial-09")
+               (:file "09-the-viewport")
                (:file "10/tutorial-10")
                (:file "11/tutorial-11")
                (:file "12/tutorial-12")
