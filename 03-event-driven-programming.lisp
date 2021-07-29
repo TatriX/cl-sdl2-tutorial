@@ -1,6 +1,7 @@
 (defpackage #:sdl2-tutorial-03-event-driven-programming
   (:use :cl)
-  (:export :run))
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
 (in-package :sdl2-tutorial-03-event-driven-programming)
 
@@ -18,15 +19,14 @@
          ,@body))))
 
 (defun load-image (pathname)
-  (let* ((fullpath (merge-pathnames pathname (asdf:system-source-directory :sdl2-tutorial)))
-         (image (sdl2:load-bmp fullpath)))
+  (let ((image (sdl2:load-bmp pathname)))
     (if (autowrap:wrapper-null-p image)
-        (error "cannot load image ~a (check that file exists)" fullpath)
+        (error "cannot load image ~a (check that file exists)" pathname)
         image)))
 
 (defun run ()
   (with-window-surface (window screen-surface)
-    (let ((image (load-image "./assets/03/exit.bmp")))
+    (let ((image (load-image (asset-pathname #P"./assets/03/exit.bmp"))))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
         (:idle ()

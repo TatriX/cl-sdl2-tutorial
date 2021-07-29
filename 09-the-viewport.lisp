@@ -1,6 +1,7 @@
 (defpackage #:sdl2-tutorial-09-the-viewport
   (:use :cl)
-  (:export :run))
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
 (in-package :sdl2-tutorial-09-the-viewport)
 
@@ -18,14 +19,15 @@
          ,@body))))
 
 (defun load-texture (renderer pathname)
-  (let ((fullpath (merge-pathnames pathname (asdf:system-source-directory :sdl2-tutorial))))
-    (sdl2:create-texture-from-surface renderer (sdl2-image:load-image fullpath))))
+  (let ((surface (sdl2-image:load-image pathname)))
+    (prog1 (sdl2:create-texture-from-surface renderer surface)
+      (sdl2:free-surface surface))))
 
 (defun run ()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
 
-    (let ((texture (load-texture renderer "assets/09/texture.png")))
+    (let ((texture (load-texture renderer (asset-pathname #P"assets/09/texture.png"))))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
         (:idle ()
@@ -55,4 +57,6 @@
                  (sdl2:render-set-viewport renderer bottom-viewport)
                  (sdl2:render-copy renderer texture))
 
-               (sdl2:render-present renderer))))))
+               (sdl2:render-present renderer)))
+      ;; cleanup
+      (sdl2:destroy-texture texture))))

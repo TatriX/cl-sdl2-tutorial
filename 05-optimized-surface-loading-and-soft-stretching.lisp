@@ -1,6 +1,7 @@
 (defpackage #:sdl2-tutorial-05-optimized-surface-loading-and-soft-stretching
   (:use :cl)
-  (:export :run))
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
 (in-package :sdl2-tutorial-05-optimized-surface-loading-and-soft-stretching)
 
@@ -18,15 +19,15 @@
          ,@body))))
 
 (defun load-surface (pathname pixel-format)
-  (let* ((fullpath (merge-pathnames pathname (asdf:system-source-directory :sdl2-tutorial)))
-         (image (sdl2:load-bmp fullpath)))
+  (let ((image (sdl2:load-bmp pathname)))
     (if (autowrap:wrapper-null-p image)
-        (error "cannot load image ~a (check that file exists)" fullpath)
+        (error "cannot load image ~a (check that file exists)" pathname)
         (sdl2:convert-surface-format image pixel-format))))
 
 (defun run ()
   (with-window-surface (window screen-surface)
-    (let ((image-surface (load-surface "assets/05/stretch.bmp" (sdl2:surface-format-format screen-surface)))
+    (let ((image-surface (load-surface (asset-pathname #P"./assets/05/stretch.bmp")
+                                       (sdl2:surface-format-format screen-surface)))
           (rect (sdl2:make-rect 0 0 *screen-width* *screen-height*)))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
@@ -35,4 +36,6 @@
                                  nil
                                  screen-surface
                                  rect)
-               (sdl2:update-window window))))))
+               (sdl2:update-window window)))
+      ;; clean up
+      (sdl2:free-surface image-surface))))

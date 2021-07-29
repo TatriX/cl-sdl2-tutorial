@@ -1,6 +1,7 @@
 (defpackage #:sdl2-tutorial-04-key-presses
   (:use :cl)
-  (:export :run))
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
 (in-package :sdl2-tutorial-04-key-presses)
 
@@ -18,18 +19,17 @@
          ,@body))))
 
 (defun load-image (pathname)
-  (let* ((fullpath (merge-pathnames pathname (asdf:system-source-directory :sdl2-tutorial)))
-         (image (sdl2:load-bmp fullpath)))
+  (let ((image (sdl2:load-bmp pathname)))
     (if (autowrap:wrapper-null-p image)
-        (error "cannot load image ~a (check that file exists)" fullpath)
+        (error "cannot load image ~a (check that file exists)" pathname)
         image)))
 
 (defun load-media ()
-  (list :default (load-image "assets/04/press.bmp")
-        :up (load-image "assets/04/up.bmp")
-        :down (load-image "assets/04/down.bmp")
-        :left (load-image "assets/04/left.bmp")
-        :right (load-image "assets/04/right.bmp")))
+  (list :default (load-image (asset-Pathname #P"./assets/04/press.bmp"))
+        :up (load-image (asset-pathname #P"./assets/04/up.bmp"))
+        :down (load-image (asset-pathname #P"./assets/04/down.bmp"))
+        :left (load-image (asset-pathname #P"./assets/04/left.bmp"))
+        :right (load-image (asset-pathname #P"./assets/04/right.bmp"))))
 
 (defun run ()
   (with-window-surface (window screen-surface)

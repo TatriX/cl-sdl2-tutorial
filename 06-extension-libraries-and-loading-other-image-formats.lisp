@@ -1,6 +1,7 @@
 (defpackage #:sdl2-tutorial-06-extension-libraries-and-loading-other-image-formats
   (:use :cl)
-  (:export :run))
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
 (in-package :sdl2-tutorial-06-extension-libraries-and-loading-other-image-formats)
 
@@ -20,18 +21,20 @@
          (sdl2-image:quit)))))
 
 (defun load-surface (pathname pixel-format)
-  (let ((fullpath (merge-pathnames pathname (asdf:system-source-directory :sdl2-tutorial))))
-    (sdl2:convert-surface-format (sdl2-image:load-image fullpath) pixel-format)))
+  (let ((surface (sdl2-image:load-image pathname)))
+    (prog1 (sdl2:convert-surface-format surface pixel-format)
+      (sdl2:free-surface surface))))
 
 (defun run ()
   (with-window-surface (window screen-surface)
-    (let ((image-surface (load-surface "assets/06/loaded.png" (sdl2:surface-format-format screen-surface)))
+    (let ((image-surface (load-surface (asset-pathname #P"assets/06/loaded.png")
+                                       (sdl2:surface-format-format screen-surface)))
           (rect (sdl2:make-rect 0 0 *screen-width* *screen-height*)))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
         (:idle ()
-               (sdl2:blit-scaled image-surface
-                                 nil
-                                 screen-surface
-                                 rect)
-               (sdl2:update-window window))))))
+               (sdl2:blit-scaled image-surface nil screen-surface rect)
+               (sdl2:update-window window)))
+
+      ;; cleanup
+      (sdl2:free-surface image-surface))))
