@@ -20,4 +20,11 @@
                (:file "13/tutorial-13")
                (:file "14/tutorial-14")
                (:file "15/tutorial-15")
-               (:file "16/tutorial-16")))
+               (:file "16/tutorial-16"))
+  :in-order-to ((test-op (test-op "sdl2-tutorial/tests"))))
+
+
+(defsystem "sdl2-tutorial/tests"
+  :depends-on ("parachute")
+  :components ((:file "tests/tests"))
+  :perform (test-op (op c) (symbol-call :parachute :test :sdl2-tutorial-tests)))
