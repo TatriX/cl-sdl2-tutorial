@@ -1,3 +1,5 @@
+![ci](https://github.com/TatriX/cl-sdl2-tutorial/actions/workflows/ci.yml/badge.svg)
+
 # Common Lisp SDL2 tutorials
 Adapted from http://lazyfoo.net/tutorials/SDL/
 
