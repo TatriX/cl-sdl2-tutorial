@@ -13,5 +13,5 @@ exec ros -Q -- $0 "$@"
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (asdf:test-system :sdl2-tutorial))
+  (parachute:test-toplevel :sdl2-tutorial-tests))
 ;;; vim: set ft=lisp lisp:
