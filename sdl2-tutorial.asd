@@ -1,6 +1,7 @@
 (defsystem "sdl2-tutorial"
   :description "SDL2 Tutorial based upon http://lazyfoo.net/tutorials/SDL"
-  :version "0.0.1"
+  :version "0.2.0"
+  :author "TatriX <tatrics@gmail.com>"
   :licence "Public Domain"
   :depends-on ("bordeaux-threads" "sdl2" "sdl2-image" "sdl2-ttf")
   :components ((:file "utils")
