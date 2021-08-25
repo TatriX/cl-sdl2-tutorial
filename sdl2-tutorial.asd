@@ -15,7 +15,7 @@
                (:file "08-geometry-rendering")
                (:file "09-the-viewport")
                (:file "10-color-keying")
-               (:file "11/tutorial-11")
+               (:file "11-clip-rendering-and-sprite-sheets")
                (:file "12/tutorial-12")
                (:file "13/tutorial-13")
                (:file "14/tutorial-14")
