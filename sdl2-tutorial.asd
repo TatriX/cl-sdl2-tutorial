@@ -16,7 +16,7 @@
                (:file "09-the-viewport")
                (:file "10-color-keying")
                (:file "11-clip-rendering-and-sprite-sheets")
-               (:file "12/tutorial-12")
+               (:file "12-color-modulation")
                (:file "13/tutorial-13")
                (:file "14/tutorial-14")
                (:file "15/tutorial-15")

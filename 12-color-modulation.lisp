@@ -1,8 +1,9 @@
-(defpackage #:sdl2-tutorial-12
-  (:use :common-lisp)
-  (:export :main))
+(defpackage #:sdl2-tutorial-12-color-modulation
+  (:use :cl)
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
-(in-package :sdl2-tutorial-12)
+(in-package #:sdl2-tutorial-12-color-modulation)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -48,7 +49,7 @@
 (defmacro with-window-renderer ((window renderer) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
-                        :title "SDL2 Tutorial"
+                        :title "SDL2 Tutorial 12"
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
@@ -64,10 +65,10 @@
 (defmacro clamp-decf (x delta)
   `(setf ,x (clamp (- ,x ,delta))))
 
-(defun main()
+(defun run ()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((texture (load-texture-from-file renderer "12/texture.png"))
+    (let ((texture (load-texture-from-file renderer (asset-pathname #P"assets/12/texture.png")))
           (r 255)
           (g 255)
           (b 255)
