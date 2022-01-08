@@ -20,7 +20,7 @@
                (:file "13-alpha-blending")
                (:file "14-animated-sprites-and-vsync")
                (:file "15-rotation-and-flipping")
-               (:file "16/tutorial-16"))
+               (:file "16-true-type-fonts"))
   :in-order-to ((test-op (test-op "sdl2-tutorial/tests"))))
 
 

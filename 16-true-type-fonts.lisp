@@ -1,8 +1,9 @@
-(defpackage #:sdl2-tutorial-16
-  (:use :common-lisp)
-  (:export :main))
+(defpackage #:sdl2-tutorial-16-true-type-fonts
+  (:use :cl)
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
-(in-package :sdl2-tutorial-16)
+(in-package #:sdl2-tutorial-16-true-type-fonts)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -22,6 +23,10 @@
    (texture
     :accessor tex-texture
     :initform nil)))
+
+(defun free-tex (tex)
+  (with-slots (texture) tex
+    (sdl2:destroy-texture texture)))
 
 (defun load-texture-from-file (renderer filename)
   (let ((tex (make-instance 'tex :renderer renderer)))
@@ -62,18 +67,18 @@
 (defmacro with-window-renderer ((window renderer) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
-                        :title "SDL2 Tutorial"
+                        :title "SDL2 Tutorial 16"
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
        (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated))
          ,@body))))
 
-(defun main()
+(defun run ()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
     (sdl2-ttf:init)
-    (setf *font* (sdl2-ttf:open-font "16/Pacifico.ttf" 28))
+    (setf *font* (sdl2-ttf:open-font (asset-pathname "assets/16/Pacifico.ttf") 28))
     (let ((texture (load-texture-from-text renderer "The quick brown fox jumps over the lazy dog")))
       (sdl2:with-event-loop (:method :poll)
         (:quit () t)
@@ -83,6 +88,7 @@
                (render texture
                        (round (/ (- *screen-width* (tex-width texture)) 2))
                        (round (/ (- *screen-height* (tex-height texture)) 2)))
-               (sdl2:render-present renderer))))
+               (sdl2:render-present renderer)))
+      (free-tex texture))
     (sdl2-ttf:quit)
     (sdl2-image:quit)))
