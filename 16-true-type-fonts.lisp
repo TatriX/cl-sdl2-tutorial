@@ -89,6 +89,7 @@
                        (round (/ (- *screen-width* (tex-width texture)) 2))
                        (round (/ (- *screen-height* (tex-height texture)) 2)))
                (sdl2:render-present renderer)))
+      ;; clean up
       (free-tex texture))
     (sdl2-ttf:quit)
     (sdl2-image:quit)))
