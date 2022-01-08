@@ -51,7 +51,7 @@
 (defun set-color (tex r g b)
   (sdl2:set-texture-color-mod (tex-texture tex) r g b))
 
-(defun render (tex x y &key clip angle center flip)
+(defun render (tex x y &key clip angle center (flip :none))
   (with-slots (renderer texture width height) tex
     (sdl2:render-copy-ex renderer
                          texture
