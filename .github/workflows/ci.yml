@@ -1,0 +1,29 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    name: ${{ matrix.lisp }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        lisp: [sbcl-bin]
+        os: [ubuntu-latest] # , macOS-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install SDL2
+        run: |
+          sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
+      - name: Install Roswell
+        env:
+          LISP: ${{ matrix.lisp }}
+        run: |
+          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+
+      - name: Run tests
+        run: |
+          ./tests/test.ros
