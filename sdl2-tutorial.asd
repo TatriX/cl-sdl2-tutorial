@@ -19,7 +19,7 @@
                (:file "12-color-modulation")
                (:file "13-alpha-blending")
                (:file "14-animated-sprites-and-vsync")
-               (:file "15/tutorial-15")
+               (:file "15-rotation-and-flipping")
                (:file "16/tutorial-16"))
   :in-order-to ((test-op (test-op "sdl2-tutorial/tests"))))
 
