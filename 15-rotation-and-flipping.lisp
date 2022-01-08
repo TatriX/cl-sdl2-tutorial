@@ -1,8 +1,9 @@
-(defpackage #:sdl2-tutorial-15
-  (:use :common-lisp)
-  (:export :main))
+(defpackage #:sdl2-tutorial-15-rotation-and-flipping
+  (:use :cl)
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
-(in-package :sdl2-tutorial-15)
+(in-package #:sdl2-tutorial-15-rotation-and-flipping)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -51,17 +52,17 @@
 (defmacro with-window-renderer ((window renderer) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
-                        :title "SDL2 Tutorial"
+                        :title "SDL2 Tutorial 15"
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
        (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated))
          ,@body))))
 
-(defun main()
+(defun run ()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((texture (load-texture-from-file renderer "15/arrow.png"))
+    (let ((texture (load-texture-from-file renderer (asset-pathname "assets/15/arrow.png")))
           (flip :none)
           (degrees 0)
           (delta 60))

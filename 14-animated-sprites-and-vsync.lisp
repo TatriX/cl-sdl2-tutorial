@@ -1,8 +1,9 @@
-(defpackage #:sdl2-tutorial-14
-  (:use :common-lisp)
-  (:export :main))
+(defpackage #:sdl2-tutorial-14-animated-sprites-and-vsync
+  (:use :cl)
+  (:export :run)
+  (:import-from :sdl2-tutorial-utils :asset-pathname))
 
-(in-package :sdl2-tutorial-14)
+(in-package #:sdl2-tutorial-14-animated-sprites-and-vsync)
 
 (defparameter *screen-width* 640)
 (defparameter *screen-height* 480)
@@ -54,7 +55,7 @@
 (defmacro with-window-renderer ((window renderer) &body body)
   `(sdl2:with-init (:video)
      (sdl2:with-window (,window
-                        :title "SDL2 Tutorial"
+                        :title "SDL2 Tutorial 14"
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
@@ -70,10 +71,10 @@
 (defmacro clamp-decf (x delta)
   `(setf ,x (clamp (- ,x ,delta))))
 
-(defun main()
+(defun run ()
   (with-window-renderer (window renderer)
     (sdl2-image:init '(:png))
-    (let ((spritesheet-tex (load-texture-from-file renderer "14/character.png"))
+    (let ((spritesheet-tex (load-texture-from-file renderer (asset-pathname "assets/14/character.png")))
           (clip (sdl2:make-rect 0 0 64 96))
           (sprite-frames 4)
           (current-sprite-frame 0)
