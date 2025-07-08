@@ -24,7 +24,7 @@
       (:quit () t)
       (:idle ()
              ;; Clear screen
-             (sdl2:set-render-draw-color renderer 255 255 255 255)
+             (sdl2:set-render-draw-color renderer #xFF #xFF #xFF #xFF)
              (sdl2:render-clear renderer)
 
              ;; Render red filled quad
@@ -32,7 +32,7 @@
                                           (/ *screen-height* 4)
                                           (/ *screen-width* 2)
                                           (/ *screen-height* 2)))
-               (sdl2:set-render-draw-color renderer 255 0 0 255)
+               (sdl2:set-render-draw-color renderer #xFF #x00 #x00 #xFF)
                (sdl2:render-fill-rect renderer fill-rect))
 
              ;; Render green outlined quad
@@ -44,7 +44,7 @@
                (sdl2:render-draw-rect renderer outline-rect))
 
              ;; Draw blue horizontal line
-             (sdl2:set-render-draw-color renderer 0 0 255 255)
+             (sdl2:set-render-draw-color renderer #x00 #x00 #xFF #xFF)
              (sdl2:render-draw-line renderer
                                     0
                                     (/ *screen-height* 2)
@@ -52,7 +52,7 @@
                                     (/ *screen-height* 2))
 
              ;; Draw vertical line of yellow dots
-             (sdl2:set-render-draw-color renderer 255 255 0 255)
+             (sdl2:set-render-draw-color renderer #xFF #xFF #x00 #xFF)
              (loop for i from 0 below *screen-height* by 4
                    do (sdl2::render-draw-point renderer (/ *screen-width* 2) i))
 
