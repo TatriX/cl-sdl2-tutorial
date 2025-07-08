@@ -40,7 +40,7 @@
                                              (round (/ *screen-height* 8))
                                              (round (* 2/3 *screen-width*))
                                              (round (* 2/3 *screen-height*))))
-               (sdl2:set-render-draw-color renderer 0 255 0 255)
+               (sdl2:set-render-draw-color renderer #x00 #xFF #x00 #xFF)
                (sdl2:render-draw-rect renderer outline-rect))
 
              ;; Draw blue horizontal line
