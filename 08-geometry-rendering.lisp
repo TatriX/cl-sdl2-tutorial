@@ -24,7 +24,7 @@
       (:quit () t)
       (:idle ()
              ;; Clear screen
-             (sdl2:set-render-draw-color renderer #xFF #xFF #xFF #xFF)
+             (sdl2:set-render-draw-color renderer 255 255 255 255)
              (sdl2:render-clear renderer)
 
              ;; Render red filled quad
@@ -32,7 +32,7 @@
                                           (/ *screen-height* 4)
                                           (/ *screen-width* 2)
                                           (/ *screen-height* 2)))
-               (sdl2:set-render-draw-color renderer #xFF #x00 #x00 #xFF)
+               (sdl2:set-render-draw-color renderer 255 0 0 255)
                (sdl2:render-fill-rect renderer fill-rect))
 
              ;; Render green outlined quad
@@ -40,11 +40,11 @@
                                              (round (/ *screen-height* 8))
                                              (round (* 2/3 *screen-width*))
                                              (round (* 2/3 *screen-height*))))
-               (sdl2:set-render-draw-color renderer #x00 #xFF #x00 #xFF)
+               (sdl2:set-render-draw-color renderer 0 255 0 255)
                (sdl2:render-draw-rect renderer outline-rect))
 
              ;; Draw blue horizontal line
-             (sdl2:set-render-draw-color renderer #x00 #x00 #xFF #xFF)
+             (sdl2:set-render-draw-color renderer 0 0 255 255)
              (sdl2:render-draw-line renderer
                                     0
                                     (/ *screen-height* 2)
@@ -52,9 +52,12 @@
                                     (/ *screen-height* 2))
 
              ;; Draw vertical line of yellow dots
-             (sdl2:set-render-draw-color renderer #xFF #xFF #x00 #xFF)
+             (sdl2:set-render-draw-color renderer 255 255 0 255)
              (loop for i from 0 below *screen-height* by 4
                    do (sdl2::render-draw-point renderer (/ *screen-width* 2) i))
 
              ;; Update screen
-             (sdl2:render-present renderer)))))
+             (sdl2:render-present renderer)))
+
+    ;; Clean up
+    (sdl2-image:quit)))

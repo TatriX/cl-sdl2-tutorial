@@ -37,4 +37,5 @@
                (sdl2:render-present renderer)))
 
       ;; clean up
-      (sdl2:destroy-texture texture))))
+      (sdl2:destroy-texture texture)
+      (sdl2-image:quit))))

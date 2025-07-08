@@ -68,4 +68,5 @@
                (sdl2:render-present renderer)))
       ;; clean up
       (free-tex background-tex)
-      (free-tex player-tex))))
+      (free-tex player-tex)
+      (sdl2-image:quit))))

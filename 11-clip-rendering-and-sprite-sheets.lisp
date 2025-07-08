@@ -14,13 +14,17 @@
     :initform (error "Must supply a renderer"))
    (width
     :accessor tex-width
-    :initform 0 )
+    :initform 0)
    (height
     :accessor tex-height
     :initform 0)
    (texture
     :accessor tex-texture
     :initform nil)))
+
+(defun free-tex (tex)
+  (with-slots (texture) tex
+    (sdl2:destroy-texture texture)))
 
 (defun load-texture-from-file (renderer pathname)
   (let ((tex (make-instance 'tex :renderer renderer)))
@@ -88,4 +92,8 @@
                        (- *screen-height* (sdl2:rect-height bottom-right))
                        :clip bottom-right)
 
-               (sdl2:render-present renderer))))))
+               (sdl2:render-present renderer)))
+
+      ;; Clean up
+      (free-tex spritesheet-tex)
+      (sdl2-image:quit))))

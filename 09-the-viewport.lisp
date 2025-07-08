@@ -58,5 +58,7 @@
                  (sdl2:render-copy renderer texture))
 
                (sdl2:render-present renderer)))
+
       ;; cleanup
-      (sdl2:destroy-texture texture))))
+      (sdl2:destroy-texture texture)
+      (sdl2-image:quit))))
