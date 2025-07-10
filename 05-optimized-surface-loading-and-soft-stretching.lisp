@@ -22,7 +22,8 @@
   (let ((image (sdl2:load-bmp pathname)))
     (if (autowrap:wrapper-null-p image)
         (error "cannot load image ~a (check that file exists)" pathname)
-        (sdl2:convert-surface-format image pixel-format))))
+        (prog1 (sdl2:convert-surface-format image pixel-format)
+          (sdl2:free-surface image)))))
 
 (defun run ()
   (with-window-surface (window screen-surface)

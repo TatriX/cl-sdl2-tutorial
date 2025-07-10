@@ -57,4 +57,7 @@
                    do (sdl2::render-draw-point renderer (/ *screen-width* 2) i))
 
              ;; Update screen
-             (sdl2:render-present renderer)))))
+             (sdl2:render-present renderer)))
+
+    ;; Clean up
+    (sdl2-image:quit)))
