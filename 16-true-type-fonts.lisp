@@ -16,7 +16,7 @@
     :initform (error "Must supply a renderer"))
    (width
     :accessor tex-width
-    :initform 0 )
+    :initform 0)
    (height
     :accessor tex-height
     :initform 0)
@@ -36,7 +36,8 @@
         (setf height (sdl2:surface-height surface))
         (sdl2:set-color-key surface :true (sdl2:map-rgb (sdl2:surface-format surface)
                                                         0 #xFF #xFF))
-        (setf texture (sdl2:create-texture-from-surface renderer surface))))
+        (setf texture (sdl2:create-texture-from-surface renderer surface))
+        (sdl2:free-surface surface)))
     tex))
 
 (defun load-texture-from-text (renderer text)
@@ -45,7 +46,8 @@
       (let ((surface (sdl2-ttf:render-text-solid *font* text 0 0 0 0)))
         (setf width (sdl2:surface-width surface))
         (setf height (sdl2:surface-height surface))
-        (setf texture (sdl2:create-texture-from-surface renderer surface))))
+        (setf texture (sdl2:create-texture-from-surface renderer surface))
+        (sdl2:free-surface surface)))
     tex))
 
 (defun set-color (tex r g b)
@@ -71,7 +73,7 @@
                         :w *screen-width*
                         :h *screen-height*
                         :flags '(:shown))
-       (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated))
+       (sdl2:with-renderer (,renderer ,window :index -1 :flags '(:accelerated :presentvsync))
          ,@body))))
 
 (defun run ()
@@ -89,7 +91,8 @@
                        (round (/ (- *screen-width* (tex-width texture)) 2))
                        (round (/ (- *screen-height* (tex-height texture)) 2)))
                (sdl2:render-present renderer)))
+
       ;; clean up
-      (free-tex texture))
-    (sdl2-ttf:quit)
-    (sdl2-image:quit)))
+      (free-tex texture)
+      (sdl2-ttf:quit)
+      (sdl2-image:quit))))

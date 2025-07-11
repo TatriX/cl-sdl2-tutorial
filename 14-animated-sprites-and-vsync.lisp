@@ -14,13 +14,17 @@
     :initform (error "Must supply a renderer"))
    (width
     :accessor tex-width
-    :initform 0 )
+    :initform 0)
    (height
     :accessor tex-height
     :initform 0)
    (texture
     :accessor tex-texture
     :initform nil)))
+
+(defun free-tex (tex)
+  (with-slots (texture) tex
+    (sdl2:destroy-texture texture)))
 
 (defun load-texture-from-file (renderer filename)
   (let ((tex (make-instance 'tex :renderer renderer)))
@@ -30,7 +34,8 @@
         (setf height (sdl2:surface-height surface))
         (sdl2:set-color-key surface :true (sdl2:map-rgb (sdl2:surface-format surface)
                                                         0 #xFF #xFF))
-        (setf texture (sdl2:create-texture-from-surface renderer surface))))
+        (setf texture (sdl2:create-texture-from-surface renderer surface))
+        (sdl2:free-surface surface)))
     tex))
 
 (defun set-color (tex r g b)
@@ -97,4 +102,8 @@
                  (incf current-sprite-frame)
                  (when (>= current-sprite-frame sprite-frames)
                    (setf current-sprite-frame 0))
-                 (setf (sdl2:rect-x clip) (* current-sprite-frame (sdl2:rect-width clip)))))))))
+                 (setf (sdl2:rect-x clip) (* current-sprite-frame (sdl2:rect-width clip))))))
+
+      ;; Clean up
+      (free-tex spritesheet-tex)
+      (sdl2-image:quit))))
