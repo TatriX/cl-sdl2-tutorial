@@ -94,5 +94,7 @@
 
       ;; clean up
       (free-tex texture)
+      (sdl2-ttf:close-font *font*)
+      (setf *font* nil)
       (sdl2-ttf:quit)
       (sdl2-image:quit))))
